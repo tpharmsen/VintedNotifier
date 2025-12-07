@@ -81,7 +81,7 @@ class VintedMonitor:
         return list(set(items))
 
     def run(self):
-
+        
         logging.basicConfig(
             filename=f"logs/runfrom{datetime.datetime.now().strftime("%Y-%m-%d-%H:%M:%S")}.log",
             level=logging.INFO,

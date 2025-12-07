@@ -23,6 +23,9 @@ def main():
     if proxy_list is None or len(proxy_list) == 0:
         raise ValueError("proxy_list.txt is empty or could not be loaded.")
 
+    if not os.path.exists("logs"):
+        os.makedirs("logs")
+
     monitor = VintedMonitor(proxy_list, search_params_list, API_TOKEN, USER_KEY)
     monitor.run()
 
