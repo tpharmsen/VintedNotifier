@@ -2,7 +2,7 @@ import http.client
 import logging
 import urllib.parse
 
-def notify(self, API_TOKEN: str, USER_KEY: str, item_name: str, item_url: str, item_price: str, item_brand: str, item_size: str):
+def notify(API_TOKEN: str, USER_KEY: str, item_name: str, item_url: str, item_price: str, item_brand: str, item_size: str):
 
     message = f"""
         🚨 {item_name} 🚨 
