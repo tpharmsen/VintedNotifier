@@ -43,7 +43,6 @@ class VintedMonitor:
         session_cookie = fetch_cookies(cookie_client, BASE_URL, SESSION_COOKIE_NAME)
         while session_cookie == -1:
             self.proxymanager.mark_failed(proxy_url)
-            logging.info(f"Marking proxy as failed: {proxy_url}")
             user_agent = get_random_user_agent()
             proxy_url = self.proxymanager.get_next_proxy()
             cookie_client = create_cookie_client(user_agent, proxy_url)
@@ -59,7 +58,7 @@ class VintedMonitor:
         for firstloop in range(2):
             for s, search_params in enumerate(self.search_params_list):
                 firstsearch_params = {**search_params}
-                firstsearch_params["per_page"] = 30 * firstsearch_params["per_page"]
+                firstsearch_params["per_page"] = 10 * firstsearch_params["per_page"]
                 firstsearch_params["time"] = int(time.time())
                 status_code, data = fetch_search(self.api_client, API_URL, params=firstsearch_params)
                 while status_code == -1:

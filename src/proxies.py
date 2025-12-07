@@ -27,5 +27,6 @@ class RotatingProxyManager:
         raise RuntimeError("All proxies are in cooldown — no proxy available")
 
     def mark_failed(self, proxy):
-        logging.info(f"⚠️ Proxy possibly banned: {proxy} (cooldown {self.cooldown}s)")
+        
+        logging.info(f"Marking proxy: {proxy} as down for assumed {int(self.cooldown / 60)} min.")
         self.failed[proxy] = time.time() + self.cooldown
