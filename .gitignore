@@ -1,0 +1,8 @@
+logs/
+old/
+temp/
+.env
+sync.ipynb
+proxy_list.txt
+sync2.py
+__pycache__/

@@ -1,0 +1,19 @@
+search_params:
+  - catalog_ids[]:
+      - 13
+      - 79
+      - 221
+      - 1807
+    order: newest_first
+    brand_ids[]: 2069
+    size_ids[]:
+      - 6
+      - 210
+    per_page: 20
+
+  - catalog_ids[]: 95
+    order: newest_first
+    brand_ids[]:
+      - 352755
+      - 94
+    per_page: 20
