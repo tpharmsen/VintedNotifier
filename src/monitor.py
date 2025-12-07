@@ -47,8 +47,8 @@ class VintedMonitor:
             proxy_url = self.proxymanager.get_next_proxy()
             cookie_client = create_cookie_client(user_agent, proxy_url)
             session_cookie = fetch_cookies(cookie_client, BASE_URL, SESSION_COOKIE_NAME)
-        logging.info("✨ Refreshed proxy: " + str(proxy_url))
-        logging.info("✨ Refreshed cookie: " + str(session_cookie))
+        logging.info("Refreshed proxy: " + str(proxy_url))
+        logging.info("Refreshed cookie: " + str(session_cookie))
         api_client = create_api_client(user_agent, proxy_url, session_cookie)
         self.newclient_time = time.time()
         return proxy_url, cookie_client, api_client
@@ -113,7 +113,7 @@ class VintedMonitor:
                     if item_id not in items:
                         items.append(item_id)
                         item_name, item_url, item_price, item_brand, item_size = item.get("title"), item.get("url"), item.get("price"), item.get("brand_title"), item.get("size_title")
-                        logging.info(f"🚨 New item found: {item_id} 🚨 URL: {item_url}")
+                        logging.info(f"New item found: {item_id}, URL: {item_url}")
                         notify(self.API_TOKEN, self.USER_KEY, item_name, item_url, item_price, item_brand, item_size)
 
                 if state.api_call_counter % 50 == 0:

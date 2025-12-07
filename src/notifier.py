@@ -5,7 +5,7 @@ import urllib.parse
 def notify(API_TOKEN: str, USER_KEY: str, item_name: str, item_url: str, item_price: str, item_brand: str, item_size: str):
 
     message = f"""
-        🚨 {item_name} 🚨 
+        {item_name} 
         Price: {item_price['amount']} {item_price['currency_code']}
         Brand: {item_brand}
         Size: {item_size}

@@ -3,7 +3,7 @@ import time
 from itertools import cycle
 
 class RotatingProxyManager:
-    def __init__(self, proxies, cooldown=45 * 60):
+    def __init__(self, proxies, cooldown=30 * 60):
         self.proxies = proxies
         self.cooldown = cooldown
         self.proxy_cycle = cycle(proxies)
@@ -23,7 +23,7 @@ class RotatingProxyManager:
                 #    "http://": proxy,
                 #    "https://": proxy,
                 #}
-        logging.info("⚠️⚠️⚠️ All proxies are in cooldown.")
+        logging.info("All proxies are in cooldown.")
         raise RuntimeError("All proxies are in cooldown — no proxy available")
 
     def mark_failed(self, proxy):

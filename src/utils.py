@@ -31,7 +31,7 @@ def create_cookie_client(user_agent, proxy_url=None):
             "Sec-Fetch-Dest": "document",
         },
         proxy=proxy_url,
-        timeout=30,
+        timeout=40,
         follow_redirects=True
     )
 
@@ -48,7 +48,7 @@ def create_api_client(user_agent, proxy_url, session_cookie):
             "Sec-Fetch-Dest": "empty",
         }, 
         proxy=proxy_url,
-        timeout=30,
+        timeout=40,
         follow_redirects=True
     )
 
@@ -70,9 +70,9 @@ def fetch_cookies(client: httpx.Client, url: str, cookie_name: str, tries: int =
             if cookie is not None:
                 return cookie
         except httpx.TimeoutException as e:
-            logging.info(f"⏳ Timeout during cookie fetch attempt: {e}")
+            logging.info(f"Timeout during cookie fetch attempt: {e}")
         except httpx.RequestError as e:
-            logging.info(f"⚠️ RequestError during cookie fetch attempt: {e}")
+            logging.info(f"RequestError during cookie fetch attempt: {e}")
         
         if attempt < tries - 1:
             time.sleep(random_sleeptime() * (1 + attempt)) 
@@ -87,15 +87,15 @@ def fetch_search(client: httpx.Client, url: str, params: Optional[Dict] = None, 
             if response.status_code == 200:
                 return response.status_code, response
             elif response.status_code == 429:
-                logging.info("⚠️ 429; Too Many Requests -> Sleeping...")
+                logging.info("429; Too Many Requests -> Sleeping...")
                 time.sleep(SLEEPTIME_LONG)
                 return response.status_code, response
             else:
-                logging.info("⚠️ " + str(response.status_code) + " during API call")
+                logging.info(str(response.status_code) + " during API call")
         except httpx.TimeoutException:
-            logging.info("⏳ Timeout during API call")
+            logging.info("Timeout during API call")
         except httpx.RequestError as e:
-            logging.info(f"⚠️ RequestError during API call: {e}")
+            logging.info(f"RequestError during API call: {e}")
         if attempt < tries - 1:
             time.sleep(random_sleeptime())
     logging.info(f"Failed to fetch search after {tries} tries.")
