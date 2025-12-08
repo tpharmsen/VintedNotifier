@@ -1,9 +1,10 @@
 import logging
 import time
 from itertools import cycle
+from config import PROXY_COOLDOWN
 
 class RotatingProxyManager:
-    def __init__(self, proxies, cooldown=30 * 60):
+    def __init__(self, proxies, cooldown=PROXY_COOLDOWN):
         self.proxies = proxies
         self.cooldown = cooldown
         self.proxy_cycle = cycle(proxies)

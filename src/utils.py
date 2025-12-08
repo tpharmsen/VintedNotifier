@@ -4,6 +4,7 @@ import random
 import time
 from typing import Dict, Optional
 import yaml
+from bs4 import BeautifulSoup
 
 from config import (UA_LIST, BASE_HEADERS, 
                          SESSION_COOKIE_NAME, SLEEPTIME_MIN, 
@@ -22,6 +23,19 @@ def load_txt_lines(path: str):
         lines = [line.strip() for line in f if line.strip()]
     lines = [f"http://{line}" if not line.startswith("http") else line for line in lines]
     return lines
+
+def scrape_and_save_proxies():
+    html = httpx.get("https://free-proxy-list.net/").text
+    soup = BeautifulSoup(html, "html.parser")
+
+    proxies = [
+        f"{cols[0].text.strip()}:{cols[1].text.strip()}"
+        for row in soup.select("div.table-responsive.fpl-list tbody tr")
+        if (cols := row.find_all("td")) and len(cols) >= 2
+    ]
+    with open("proxy_list.txt", "w", encoding="utf-8") as f:
+        for proxy in proxies:
+            f.write(f"{proxy}\n")
 
 def create_cookie_client(user_agent, proxy_url=None):
     return httpx.Client(

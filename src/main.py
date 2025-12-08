@@ -1,7 +1,7 @@
 import os
 import sys
 from monitor import VintedMonitor
-from utils import load_yaml, load_txt_lines
+from utils import load_yaml, load_txt_lines, scrape_and_save_proxies
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -14,20 +14,22 @@ if not API_TOKEN or not USER_KEY:
 
 def main():
     # read name of proxylist file from arguments
-    if len(sys.argv) == 1:
+    if sys.argv == "*.txt":
         proxy_list = load_txt_lines(sys.argv[1])
     else:
-        proxy_list = load_txt_lines(sys.argv[1])
+        scrape_and_save_proxies()
+        proxy_list = load_txt_lines("proxy_list.txt")
     
     config = load_yaml("search_params.yaml")
 
-    # safer: fails loudly if key missing
     search_params_list = config.get("search_params")
     if search_params_list is None:
         raise KeyError("search_params.yaml must contain a 'search_params' key.")
     
     if proxy_list is None or len(proxy_list) == 0:
         raise ValueError("proxy_list.txt is empty or could not be loaded.")
+    elif len(proxy_list) < 10:
+        print("Warning: proxy_list.txt contains less than 10 proxies")
 
     if not os.path.exists("logs"):
         os.makedirs("logs")
