@@ -45,7 +45,7 @@ class VintedMonitor:
             proxy_url = self.proxymanager.get_next_proxy()
             cookie_client = create_cookie_client(user_agent, proxy_url)
             session_cookie = fetch_cookies(cookie_client, BASE_URL, SESSION_COOKIE_NAME)
-        logging.info("Refreshed proxy: " + str(proxy_url) + " with cookie: " + str(session_cookie)[:20])
+        logging.info("Refreshed proxy: " + str(proxy_url) + " with cookie: ..." + str(session_cookie)[:20])
         api_client = create_api_client(user_agent, proxy_url, session_cookie)
         self.newclient_time = time.time()
         return proxy_url, cookie_client, api_client
