@@ -44,6 +44,7 @@ def main():
         print(f"Main error occured: {e}")
 
 if __name__ == "__main__":
+    print("Warning! Vinted Terms of Service does not allow the use of scraping/bot programs. Usage of this script might result in a permanent ban to the platform. This proof-of-concept code is for educational purposes only.")
     while True:
         try:
             main()
