@@ -34,8 +34,6 @@ class VintedMonitor:
         self.start_time = time.time()
         self.newclient_time = time.time()
         
-
-
     def refresh_clients(self):
         user_agent = get_random_user_agent()
         proxy_url = self.proxymanager.get_next_proxy()
@@ -119,9 +117,8 @@ class VintedMonitor:
                 if state.api_call_counter % 50 == 0:
                     logging.info(f"Total API calls made: {state.api_call_counter}, time elapsed: {int((time.time() - self.start_time) / 3600)} hours")
 
-                time.sleep(random_sleeptime())
-
                 if (time.time() - self.newclient_time) > PROXY_ROTATE_TIME:
                     logging.info("Refreshing clients due to time limit.")
                     self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
+                else:
                     time.sleep(random_sleeptime())

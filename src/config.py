@@ -14,6 +14,7 @@ SLEEPTIME_CONST = 30
 SLEEPTIME_MAX = 40
 SLEEPTIME_LONG = 120
 PROXY_ROTATE_TIME = 5 * 60
+TRIES = 1
 
 UA_LIST = [
         {"ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.3", "pct": 63.11},

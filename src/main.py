@@ -1,4 +1,5 @@
 import os
+import sys
 from monitor import VintedMonitor
 from utils import load_yaml, load_txt_lines
 from dotenv import load_dotenv
@@ -12,7 +13,12 @@ if not API_TOKEN or not USER_KEY:
     raise ValueError("API_TOKEN and USER_KEY must be set in the .env file.")
 
 def main():
-    proxy_list = load_txt_lines("proxy_list.txt")
+    # read name of proxylist file from arguments
+    if len(sys.argv) == 1:
+        proxy_list = load_txt_lines(sys.argv[1])
+    else:
+        proxy_list = load_txt_lines(sys.argv[1])
+    
     config = load_yaml("search_params.yaml")
 
     # safer: fails loudly if key missing

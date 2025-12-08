@@ -7,7 +7,8 @@ import yaml
 
 from config import (UA_LIST, BASE_HEADERS, 
                          SESSION_COOKIE_NAME, SLEEPTIME_MIN, 
-                         SLEEPTIME_MAX, SLEEPTIME_LONG)
+                         SLEEPTIME_MAX, SLEEPTIME_LONG,
+                         TRIES)
 import state
 
 def load_yaml(path: str):
@@ -18,7 +19,9 @@ def load_yaml(path: str):
 def load_txt_lines(path: str):
     """Load a TXT file and return a list of non-empty stripped lines."""
     with open(path, "r", encoding="utf-8") as f:
-        return [line.strip() for line in f if line.strip()]
+        lines = [line.strip() for line in f if line.strip()]
+    lines = [f"http://{line}" if not line.startswith("http") else line for line in lines]
+    return lines
 
 def create_cookie_client(user_agent, proxy_url=None):
     return httpx.Client(
@@ -59,7 +62,7 @@ def get_random_user_agent() -> str:
 def random_sleeptime():
     return random.randint(SLEEPTIME_MIN, SLEEPTIME_MAX)
 
-def fetch_cookies(client: httpx.Client, url: str, cookie_name: str, tries: int = 2) -> str:
+def fetch_cookies(client: httpx.Client, url: str, cookie_name: str, tries: int = TRIES) -> str:
     for attempt in range(tries):
         try:
             response = client.get(url)
@@ -79,7 +82,7 @@ def fetch_cookies(client: httpx.Client, url: str, cookie_name: str, tries: int =
     logging.info(f"Failed to retrieve cookie '{cookie_name}' after {tries} tries.")
     return -1
 
-def fetch_search(client: httpx.Client, url: str, params: Optional[Dict] = None, tries = 2):
+def fetch_search(client: httpx.Client, url: str, params: Optional[Dict] = None, tries = TRIES):
     for attempt in range(tries):
         try:
             response = client.get(url, params=params)
