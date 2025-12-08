@@ -32,3 +32,28 @@ def notify(API_TOKEN: str, USER_KEY: str, item_name: str, item_url: str, item_pr
     else:
         logging.info("Error sending notification:" + str(response.status))
 
+def send_error_notification(API_TOKEN: str, USER_KEY: str, error_message: str):
+    message = f""" ERROR: 
+        {error_message}
+    """
+    data = urllib.parse.urlencode({
+        "token": API_TOKEN,
+        "user": USER_KEY,
+        "message": message,
+    }).encode("utf-8")
+
+    conn = http.client.HTTPSConnection("api.pushover.net:443")
+    conn.request(
+        "POST",
+        "/1/messages.json",
+        body=data,
+        headers={"Content-type": "application/x-www-form-urlencoded"}
+    )
+    """
+    response = conn.getresponse()
+    response_text = response.read().decode()
+    if response.status == 200:
+        logging.info("Notification sent successfully!")
+    else:
+        logging.info("Error sending notification:" + str(response.status))
+    """

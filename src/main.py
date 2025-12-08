@@ -1,7 +1,10 @@
 import os
 import sys
+import time
 from monitor import VintedMonitor
+from notifier import send_error_notification
 from utils import load_yaml, load_txt_lines, scrape_and_save_proxies
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -35,7 +38,17 @@ def main():
         os.makedirs("logs")
 
     monitor = VintedMonitor(proxy_list, search_params_list, API_TOKEN, USER_KEY)
-    monitor.run()
+    try:
+        monitor.run()
+    except Exception as e:
+        print(f"Main error occured: {e}")
 
 if __name__ == "__main__":
-    main()
+    while True:
+        try:
+            main()
+        except Exception as e:
+            send_error_notification(API_TOKEN, USER_KEY, f"Vinted notifier crashed: {e}")
+            print(f"Main loop error occured: {e}, restarting in 60 seconds...")
+            time.sleep(60)      
+            continue
