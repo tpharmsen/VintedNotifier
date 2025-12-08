@@ -86,6 +86,8 @@ def fetch_cookies(client: httpx.Client, url: str, cookie_name: str, tries: int =
             cookie = response.cookies.get(cookie_name)
             if cookie is not None:
                 return cookie
+            else:
+                logging.info(f"Cookie '{cookie_name}' not found in response.")
         except httpx.TimeoutException as e:
             logging.info(f"Timeout during cookie fetch attempt: {e}")
         except httpx.RequestError as e:
