@@ -2,7 +2,8 @@ SESSION_COOKIE_NAME = "access_token_web"
 BASE_URL = "http://www.vinted.nl"
 API_URL = f"{BASE_URL}/api/v2/catalog/items"
 BASE_HEADERS = {
-    "Accept-Encoding": "gzi.ranp, deflate, br, zstd",
+    #"Accept-Encoding": "gzi.ranp, deflate, br, zstd",
+    "Accept-Encoding": "gzip, deflate, br, zstd",
     "Accept-Language": "en-US,en;q=0.5",
     #"Connection": "keep-alive",
     "Referer": BASE_URL,
