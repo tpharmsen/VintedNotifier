@@ -8,7 +8,8 @@ from bs4 import BeautifulSoup
 
 from config import (UA_LIST, BASE_HEADERS, 
                          SESSION_COOKIE_NAME, SLEEPTIME_MIN, 
-                         SLEEPTIME_MAX, SLEEPTIME_LONG,)
+                         SLEEPTIME_MAX, SLEEPTIME_LONG,
+                         TIMEOUT)
 import state
 
 def load_yaml(path: str):
@@ -48,7 +49,7 @@ def create_cookie_client(user_agent, proxy_url=None,
             #"Sec-Fetch-Dest": "document",
         },
         proxy=proxy_url,
-        timeout=40,
+        timeout=TIMEOUT,
         follow_redirects=True,
         event_hooks={
             "request": request_hooks or [],
@@ -70,7 +71,7 @@ def create_api_client(user_agent, proxy_url, session_cookie,
             #"Sec-Fetch-Dest": "empty",
         }, 
         proxy=proxy_url,
-        timeout=40,
+        timeout=TIMEOUT,
         follow_redirects=True,
         event_hooks={
             "request": request_hooks or [],
