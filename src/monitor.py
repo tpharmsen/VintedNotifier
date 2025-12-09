@@ -41,7 +41,27 @@ class VintedMonitor:
         self.logger.propagate = False
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
-        
+
+        self.latest_request = None
+    
+    def log_request(self, request: httpx.Request):
+        self.latest_request = {
+            "method": request.method,
+            "url": str(request.url),
+            "start": time.time(),
+        }
+
+    def log_response(self, response: httpx.Response):
+        if self.latest_request is None:
+            return 
+        duration = time.time() - self.latest_request["start"]
+        self.logger.info(
+            f'"{response.http_version.upper()} {response.status_code} {response.reason_phrase}" | '
+            f'{duration:.2f}s | '
+            f'{self.latest_request["method"]} {self.latest_request["url"]}'
+            )
+        self.latest_request = None 
+    """
     # HTTPX request hook
     def log_request(self, request):
         self.logger.info(f"HTTP Request: {request.method} {request.url}")
@@ -49,6 +69,7 @@ class VintedMonitor:
     # HTTPX response hook
     def log_response(self, response):
         self.logger.info(f'HTTP Response: "{response.http_version.upper()} {response.status_code} {response.reason_phrase}"')
+    """
 
     def refresh_clients(self):
         user_agent = get_random_user_agent()
