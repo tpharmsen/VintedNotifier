@@ -96,7 +96,7 @@ class VintedMonitor:
                     items.append(item_id)
                     if i < 4 and firstloop == 0:
                         self.logger.info(f"ID: {item_id}, {item_name}, URL: {item_url}")
-                time.sleep(random_sleeptime())
+                time.sleep(int(random_sleeptime()) / 2)
         return list(set(items))
 
     def run(self):
