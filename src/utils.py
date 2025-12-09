@@ -112,10 +112,10 @@ def fetch_search(client: httpx.Client, url: str, params: Optional[Dict], tries: 
             state.api_call_counter += 1
             if response.status_code == 200:
                 return response.status_code, response
-            elif response.status_code == 429:
-                logger.info("429; Too Many Requests -> Sleeping...")
-                time.sleep(SLEEPTIME_LONG)
-                return response.status_code, response
+            #elif response.status_code == 429:
+            #    logger.info("429; Too Many Requests -> Sleeping...")
+            #    time.sleep(SLEEPTIME_LONG)
+            #    return response.status_code, response
             else:
                 logger.info(str(response.status_code) + " during API call")
         except httpx.TimeoutException:
