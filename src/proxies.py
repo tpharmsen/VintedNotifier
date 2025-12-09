@@ -9,6 +9,10 @@ class RotatingProxyManager:
         self.cooldown = cooldown
         self.proxy_cycle = cycle(proxies)
         self.failed = {} 
+        # dead initialisation
+        #for proxy in proxies:
+        #    self.failed[proxy] = time.time() - self.cooldown * 10 # 
+
 
     def _is_alive(self, proxy):
         if proxy not in self.failed:
@@ -24,10 +28,7 @@ class RotatingProxyManager:
                 #    "http://": proxy,
                 #    "https://": proxy,
                 #}
-        logging.info("All proxies are in cooldown.")
         raise RuntimeError("All proxies are in cooldown — no proxy available")
 
     def mark_failed(self, proxy):
-        
-        logging.info(f"Marking proxy: {proxy} as down for assumed {int(self.cooldown / 60)} min.")
         self.failed[proxy] = time.time() + self.cooldown

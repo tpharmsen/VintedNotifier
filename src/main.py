@@ -1,12 +1,13 @@
 import os
 import sys
 import time
+import logging
+
 from monitor import VintedMonitor
 from notifier import send_error_notification
 from utils import load_yaml, load_txt_lines, scrape_and_save_proxies
 
 from dotenv import load_dotenv
-
 load_dotenv()
 
 API_TOKEN = os.getenv("API_TOKEN")
@@ -15,47 +16,57 @@ USER_KEY = os.getenv("USER_KEY")
 if not API_TOKEN or not USER_KEY:
     raise ValueError("API_TOKEN and USER_KEY must be set in the .env file.")
 
-def main():
-    # read name of proxylist file from arguments
-    if sys.argv == "*.txt":
+if not os.path.exists("logs"):
+    os.makedirs("logs")
+
+def create_monitor():
+    # proxy list
+    if len(sys.argv) > 1 and sys.argv[1].endswith(".txt"):
         proxy_list = load_txt_lines(sys.argv[1])
     else:
         scrape_and_save_proxies()
         proxy_list = load_txt_lines("proxy_list.txt")
-    
-    config = load_yaml("search_params.yaml")
 
+    if not proxy_list:
+        raise ValueError("proxy_list.txt is empty or could not be loaded.")
+    elif len(proxy_list) < 10:
+        print(f"Warning: proxy_list.txt contains only {len(proxy_list)} proxies")
+
+    # search params
+    config = load_yaml("search_params.yaml")
     search_params_list = config.get("search_params")
     if search_params_list is None:
         raise KeyError("search_params.yaml must contain a 'search_params' key.")
     
-    if proxy_list is None or len(proxy_list) == 0:
-        raise ValueError("proxy_list.txt is empty or could not be loaded.")
-    elif len(proxy_list) < 10:
-        print("Warning: proxy_list.txt contains less than 10 proxies")
+    return VintedMonitor(proxy_list, search_params_list, API_TOKEN, USER_KEY)
 
-    if not os.path.exists("logs"):
-        os.makedirs("logs")
+def close_logger(logger):
+    for handler in logger.handlers[:]:
+        handler.close()
+        logger.removeHandler(handler)
 
-    monitor = VintedMonitor(proxy_list, search_params_list, API_TOKEN, USER_KEY)
-    try:
-        monitor.run()
-    except Exception as e:
-        print(f"Main error occured: {e}")
 
 if __name__ == "__main__":
     print("""
           ***
-          Warning! Vinted Terms of Service does not allow the use of scraping/bot programs. 
-          Usage of this script might result in a permanent ban to the platform. 
-          This proof-of-concept code is for educational purposes only.
+          Warning! Vinted Terms of Service forbids scraping or automated tools.
+          Usage may result in a permanent ban.
           ***
-          """)
+    """)
     while True:
+        monitor = None
         try:
-            main()
+            monitor = create_monitor()
+            monitor.run()
+
         except Exception as e:
-            send_error_notification(API_TOKEN, USER_KEY, f"Vinted notifier crashed: {e}")
-            print(f"Main loop error occured: {e}, restarting in 60 seconds...")
-            time.sleep(60)      
+            monitor.logger.exception("Exception occurred")
+            monitor.logger.error(f"Vinted notifier crashed: {e}")
+            send_error_notification(API_TOKEN, USER_KEY, monitor.logger, f"Vinted notifier crashed: {e}")
+
+            if monitor is not None and hasattr(monitor, "logger"):
+                close_logger(monitor.logger)
+
+            print(f"Main loop error occurred: {e}, restarting in 60 seconds...")
+            time.sleep(60)
             continue

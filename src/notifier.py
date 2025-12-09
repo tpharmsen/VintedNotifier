@@ -2,7 +2,7 @@ import http.client
 import logging
 import urllib.parse
 
-def notify(API_TOKEN: str, USER_KEY: str, item_name: str, item_url: str, item_price: str, item_brand: str, item_size: str):
+def notify(API_TOKEN: str, USER_KEY: str, logger, item_name: str, item_url: str, item_price: str, item_brand: str, item_size: str):
 
     message = f"""
         {item_name} 
@@ -28,11 +28,11 @@ def notify(API_TOKEN: str, USER_KEY: str, item_name: str, item_url: str, item_pr
     response = conn.getresponse()
     response_text = response.read().decode()
     if response.status == 200:
-        logging.info("Notification sent successfully!")
+        logger.info("Notification sent successfully!")
     else:
-        logging.info("Error sending notification:" + str(response.status))
+        logger.info("Error sending notification:" + str(response.status))
 
-def send_error_notification(API_TOKEN: str, USER_KEY: str, error_message: str):
+def send_error_notification(API_TOKEN: str, USER_KEY: str, logger, error_message: str):
     message = f""" ERROR: 
         {error_message}
     """
@@ -49,11 +49,11 @@ def send_error_notification(API_TOKEN: str, USER_KEY: str, error_message: str):
         body=data,
         headers={"Content-type": "application/x-www-form-urlencoded"}
     )
-    """
+    
     response = conn.getresponse()
     response_text = response.read().decode()
     if response.status == 200:
-        logging.info("Notification sent successfully!")
+        logger.info("Notification sent successfully!")
     else:
-        logging.info("Error sending notification:" + str(response.status))
-    """
+        logger.info("Error sending notification:" + str(response.status))
+    
