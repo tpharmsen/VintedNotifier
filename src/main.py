@@ -19,6 +19,8 @@ if not API_TOKEN or not USER_KEY:
 if not os.path.exists("logs"):
     os.makedirs("logs")
 
+maxnum = 10
+
 def create_monitor():
     # proxy list
     if len(sys.argv) > 1 and sys.argv[1].endswith(".txt"):
@@ -53,20 +55,20 @@ if __name__ == "__main__":
           Usage may result in a permanent ban.
           ***
     """)
-    while True:
+    for num in range(maxnum):
         monitor = None
         try:
             monitor = create_monitor()
             monitor.run()
 
         except Exception as e:
-            monitor.logger.exception("Exception occurred")
-            monitor.logger.error(f"Vinted notifier crashed: {e}")
-            send_error_notification(API_TOKEN, USER_KEY, monitor.logger, f"Vinted notifier crashed: {e}")
+            monitor.logger.exception(f"{num}/{maxnum}| Exception occurred")
+            monitor.logger.error(f"{num}/{maxnum}| Vinted notifier crashed: {e}")
+            send_error_notification(API_TOKEN, USER_KEY, monitor.logger, f"{num}/{maxnum}|Vinted notifier crashed: {e}")
 
             if monitor is not None and hasattr(monitor, "logger"):
                 close_logger(monitor.logger)
 
-            print(f"Main loop error occurred: {e}, restarting in 60 seconds...")
+            print(f"{num}/{maxnum}| Main loop error occurred: {e}, restarting in 60 seconds...")
             time.sleep(60)
             continue
