@@ -2,7 +2,7 @@ import http.client
 import logging
 import urllib.parse
 
-def notify(API_TOKEN: str, USER_KEY: str, logger, item_name: str, item_url: str, item_price: str, item_brand: str, item_size: str):
+def notify_item(API_TOKEN: str, USER_KEY: str, logger, item_name: str, item_url: str, item_price: str, item_brand: str, item_size: str):
 
     message = f"""
         {item_name} 
@@ -32,7 +32,7 @@ def notify(API_TOKEN: str, USER_KEY: str, logger, item_name: str, item_url: str,
     else:
         logger.info("Error sending notification:" + str(response.status))
 
-def send_error_notification(API_TOKEN: str, USER_KEY: str, logger, error_message: str):
+def notify_other(API_TOKEN: str, USER_KEY: str, logger, error_message: str):
     message = f""" ERROR: 
         {error_message}
     """
