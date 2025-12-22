@@ -154,13 +154,7 @@ class VintedMonitor:
                         items.append(item_id)
                         item_name, item_url, item_price, item_brand, item_size = item.get("title"), item.get("url"), item.get("price"), item.get("brand_title"), item.get("size_title")
                         self.logger.info(f"New item found: {item_id}, URL: {item_url}")
-                        message = f"""
-                            {item_name}
-                            Price: {item_price['amount']} {item_price['currency_code']}
-                            Brand: {item_brand}
-                            Size: {item_size}
-                            URL: {item_url}
-                            """
+                        message = f"{item_name}\nPrice: {item_price['amount']} {item_price['currency_code']}\nBrand: {item_brand}\nSize: {item_size}\nURL: {item_url}"
                         notify(self.logger, message, self.API_TOKEN, self.USER_KEY)
 
                 if state.api_call_counter % 50 == 0:
