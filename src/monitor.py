@@ -162,11 +162,11 @@ class VintedMonitor:
                     self.logger.info(elapsed_string)
                     print(elapsed_string)
                 current_hour = datetime.datetime.now().hour
-                if current_hour in [11, 17, 23] and not status_notification_sent:
+                if current_hour in [11, 17, 23] and not state.status_notification_sent:
                     notify(self.logger, f"Vinted Monitor is still running. {elapsed_string}", self.API_TOKEN, self.USER_KEY)
-                    status_notification_sent = 1
-                elif current_hour not in [11, 17, 23] and status_notification_sent:
-                    status_notification_sent = 0
+                    state.status_notification_sent = 1
+                elif current_hour not in [11, 17, 23] and state.status_notification_sent:
+                    state.status_notification_sent = 0
                 if (time.time() - self.newclient_time) > PROXY_ROTATE_TIME:
                     self.logger.info("Refreshing clients due to time limit.")
                     self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
