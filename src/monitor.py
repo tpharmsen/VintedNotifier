@@ -122,6 +122,7 @@ class VintedMonitor:
 
     def run(self):
         self.logger.info("Booting Vinted Monitor...")
+        print("Vinted Monitor started...")
         notify(self.logger, "Vinted Monitor started...", self.API_TOKEN, self.USER_KEY)
                 
         self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
@@ -129,7 +130,9 @@ class VintedMonitor:
         #raise ValueError("Debugging - stop after first search")
         
         self.logger.info("Initial items fetched:" + str(len(items)))
+        print("Initial items fetched:" + str(len(items)))
         self.logger.info("----------------------------------------------------")
+        print("----------------------------------------------------")
         while True:
             for search_params in self.search_params_list:
                 search_params["time"] = int(time.time())
@@ -161,8 +164,9 @@ class VintedMonitor:
                         notify(self.logger, message, self.API_TOKEN, self.USER_KEY)
 
                 if state.api_call_counter % 50 == 0:
-                    self.logger.info(f"Total API calls made: {state.api_call_counter}, time elapsed: {int((time.time() - self.start_time) / 3600)} hours")
-
+                    elapsed_string = f"Total API calls made: {state.api_call_counter}, time elapsed: {int((time.time() - self.start_time) / 3600)} hours"
+                    self.logger.info(elapsed_string)
+                    print(elapsed_string)
                 if (time.time() - self.newclient_time) > PROXY_ROTATE_TIME:
                     self.logger.info("Refreshing clients due to time limit.")
                     self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
