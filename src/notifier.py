@@ -41,11 +41,11 @@ def notify(logger, message: str, TOKEN: str, TARGET_ID: str):
         response_text = response.read().decode()
 
         if response.status == 200:
-            logger.info("%s notification sent successfully!", type.capitalize())
+            logger.info("%s notification sent successfully!", NOTIFY_TYPE)
         else:
             logger.error(
                 "%s notification failed (%s): %s",
-                NOTIFY_TYPE.capitalize(),
+                NOTIFY_TYPE,
                 response.status,
                 response_text
             )
@@ -53,4 +53,5 @@ def notify(logger, message: str, TOKEN: str, TARGET_ID: str):
         conn.close()
 
     except Exception as e:
-        logger.error("Notification error (%s): %s", type, e)
+        logger.error("Notification error (%s): %s", NOTIFY_TYPE, e)
+        #raise e
