@@ -18,6 +18,8 @@ PROXY_COOLDOWN = 60 * 60
 TRIES = 1
 TIMEOUT = 20
 
+NOTIFY_TYPE = "telegram"  # pushover or telegram
+
 UA_LIST = [
         {"ua": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.3", "pct": 63.11},
         {"ua": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_3_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.3.1 Mobile/15E148 Safari/604.", "pct": 8.25},

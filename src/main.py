@@ -4,7 +4,7 @@ import time
 import logging
 
 from monitor import VintedMonitor
-from notifier import notify_other
+from notifier import notify
 from utils import load_yaml, load_txt_lines, scrape_and_save_proxies
 
 from dotenv import load_dotenv
@@ -55,7 +55,7 @@ if __name__ == "__main__":
           Usage may result in a permanent ban.
           ***
     """)
-    for num in range(maxnum):
+    for num in range(1, maxnum + 1):
         monitor = None
         try:
             monitor = create_monitor()
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         except Exception as e:
             monitor.logger.exception(f"{num}/{maxnum}| Exception occurred")
             monitor.logger.error(f"{num}/{maxnum}| Vinted notifier crashed: {e}")
-            notify_other(API_TOKEN, USER_KEY, monitor.logger, f"{num}/{maxnum}|Vinted notifier crashed: {e}")
+            notify(monitor.logger, f"{num}/{maxnum} | Vinted notifier crashed: {e}", API_TOKEN, USER_KEY)
 
             if monitor is not None and hasattr(monitor, "logger"):
                 close_logger(monitor.logger)

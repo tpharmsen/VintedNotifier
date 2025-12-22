@@ -13,7 +13,7 @@ from utils import (
     fetch_cookies,
     fetch_search
 )
-from notifier import notify_item, notify_other
+from notifier import notify
 
 from config import (BASE_URL, API_URL, 
                          SESSION_COOKIE_NAME, PROXY_ROTATE_TIME, TRIES)
@@ -122,7 +122,7 @@ class VintedMonitor:
 
     def run(self):
         self.logger.info("Booting Vinted Monitor...")
-        notify_other(self.API_TOKEN, self.USER_KEY, self.logger, "Vinted Monitor started...")
+        notify(self.logger, "Vinted Monitor started...", self.API_TOKEN, self.USER_KEY)
                 
         self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
         items = self.collect_existing_ids()
@@ -151,7 +151,14 @@ class VintedMonitor:
                         items.append(item_id)
                         item_name, item_url, item_price, item_brand, item_size = item.get("title"), item.get("url"), item.get("price"), item.get("brand_title"), item.get("size_title")
                         self.logger.info(f"New item found: {item_id}, URL: {item_url}")
-                        notify_item(self.API_TOKEN, self.USER_KEY, self.logger, item_name, item_url, item_price, item_brand, item_size)
+                        message = f"""
+                            {item_name}
+                            Price: {item_price['amount']} {item_price['currency_code']}
+                            Brand: {item_brand}
+                            Size: {item_size}
+                            URL: {item_url}
+                            """
+                        notify(self.logger, message, self.API_TOKEN, self.USER_KEY)
 
                 if state.api_call_counter % 50 == 0:
                     self.logger.info(f"Total API calls made: {state.api_call_counter}, time elapsed: {int((time.time() - self.start_time) / 3600)} hours")
