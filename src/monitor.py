@@ -121,16 +121,16 @@ class VintedMonitor:
         return list(set(items))
 
     def run(self):
-        self.logger.info("Booting Vinted Monitor...")
-        print("Vinted Monitor started...")
-        notify(self.logger, "Vinted Monitor started...", self.API_TOKEN, self.USER_KEY)
+        self.logger.info("Booting ViMo...")
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + "Booting ViMo...")
+        notify(self.logger, "Booting ViMo...", self.API_TOKEN, self.USER_KEY)
                 
         self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
         items = self.collect_existing_ids()
         #raise ValueError("Debugging - stop after first search")
         
         self.logger.info("Initial items fetched:" + str(len(items)))
-        print("Initial items fetched:" + str(len(items)))
+        print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + "Initial items fetched:" + str(len(items)))
         self.logger.info("----------------------------------------------------")
         print("----------------------------------------------------")
         while True:
@@ -161,8 +161,8 @@ class VintedMonitor:
                     elapsed_string = f"Total API calls made: {state.api_call_counter}, time elapsed: {int((time.time() - self.start_time) / 3600)} hours"
                     self.logger.info(elapsed_string)
                     # also print the current time
-                    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S - " + elapsed_string))
-                current_hour = datetime.datetime.now().hour
+                    print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + elapsed_string)
+                    current_hour = datetime.datetime.now().hour
                 if current_hour in [11, 17, 23] and not state.status_notification_sent:
                     notify(self.logger, f"Vinted Monitor is still running. {elapsed_string}", self.API_TOKEN, self.USER_KEY)
                     state.status_notification_sent = 1
