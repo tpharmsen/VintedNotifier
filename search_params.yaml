@@ -9,6 +9,8 @@ search_params:
     size_ids[]:
       - 6
       - 210
+    price_to: 40
+    currency: EUR
     per_page: 20
 
   - catalog_ids[]: 95
@@ -27,5 +29,7 @@ search_params:
     size_ids[]:
       - 4
       - 208
+    price_to: 40
+    currency: EUR
     per_page: 20
 
