@@ -162,7 +162,7 @@ class VintedMonitor:
                     self.logger.info(elapsed_string)
                     # also print the current time
                     print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + elapsed_string, end="\r")
-                    current_hour = datetime.datetime.now().hour
+                current_hour = datetime.datetime.now().hour
                 if current_hour in [11, 17, 23] and not state.status_notification_sent:
                     notify(self.logger, f"Vinted Monitor is still running. {elapsed_string}", self.API_TOKEN, self.USER_KEY)
                     state.status_notification_sent = 1
