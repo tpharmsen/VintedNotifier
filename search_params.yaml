@@ -23,15 +23,15 @@ search_params:
     currency: EUR
     per_page: 20
   
-  - catalog_ids[]: 
-      - 13
-      - 79
-    order: newest_first
-    brand_ids[]: 2069
-    size_ids[]:
-      - 4
-      - 208
-    price_to: 30
-    currency: EUR
-    per_page: 20
+  #- catalog_ids[]: 
+  #    - 13
+  #    - 79
+  #  order: newest_first
+  #  brand_ids[]: 2069
+  #  size_ids[]:
+  #    - 4
+  #    - 208
+  #  price_to: 30
+  #  currency: EUR
+  #  per_page: 20
 
