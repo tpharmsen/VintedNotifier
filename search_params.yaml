@@ -19,6 +19,8 @@ search_params:
       - 352755
       - 94
       - 379104 
+    price_to: 60
+    currency: EUR
     per_page: 20
   
   - catalog_ids[]: 
@@ -29,7 +31,7 @@ search_params:
     size_ids[]:
       - 4
       - 208
-    price_to: 40
+    price_to: 30
     currency: EUR
     per_page: 20
 
