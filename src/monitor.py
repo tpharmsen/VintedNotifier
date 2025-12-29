@@ -123,7 +123,7 @@ class VintedMonitor:
     def run(self):
         self.logger.info("Booting ViMo...")
         print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + " - " + "Booting ViMo...")
-        notify(self.logger, "Booting ViMo...", self.API_TOKEN, self.USER_KEY)
+        notify(self.logger, "⏳ Booting ViMo...", self.API_TOKEN, self.USER_KEY)
                 
         self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
         items = self.collect_existing_ids()
@@ -144,7 +144,13 @@ class VintedMonitor:
                     self.curr_proxy, self.cookie_client, self.api_client = self.refresh_clients()
                     status_code, data = fetch_search(self.api_client, API_URL, params=search_params, tries=TRIES, logger=self.logger)
                 
-                data = data.json()
+                try: 
+                    data = data.json()
+                except Exception as e:
+                    self.logger.error(f"Error parsing JSON response: {e}")
+                    print(f"Error parsing JSON response: {e}")
+                    notify(self.logger, f"⚠️ JSON parsing error: {e}", self.API_TOKEN, self.USER_KEY)
+                    continue
                 if data.get("items") is None or len(data.get("items")) == 0:
                     self.logger.info("No items returned from API.")
 
@@ -153,7 +159,7 @@ class VintedMonitor:
                     if item_id not in items:
                         items.append(item_id)
                         item_name, item_url, item_price, item_brand, item_size = item.get("title"), item.get("url"), item.get("price"), item.get("brand_title"), item.get("size_title")
-                        self.logger.info(f"New item found: {item_id}, URL: {item_url}")
+                        self.logger.info(f"🔔 New item found: {item_id}, URL: {item_url}")
                         message = f"{item_name}\nPrice: {item_price['amount']} {item_price['currency_code']}\nBrand: {item_brand}\nSize: {item_size}\nURL: {item_url}"
                         notify(self.logger, message, self.API_TOKEN, self.USER_KEY)
 
@@ -165,7 +171,7 @@ class VintedMonitor:
                 current_hour = datetime.datetime.now().hour
                 if current_hour in [11, 17, 23] and not state.status_notification_sent:
                     elapsed_string = f"Total API calls made: {state.api_call_counter}, time elapsed: {int((time.time() - self.start_time) / 3600)} hours"
-                    notify(self.logger, f"Vinted Monitor is still running. {elapsed_string}", self.API_TOKEN, self.USER_KEY)
+                    notify(self.logger, f"▶️ Vinted Monitor is still running. {elapsed_string}", self.API_TOKEN, self.USER_KEY)
                     state.status_notification_sent = 1
                 elif current_hour not in [11, 17, 23] and state.status_notification_sent:
                     state.status_notification_sent = 0

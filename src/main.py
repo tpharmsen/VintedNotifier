@@ -64,7 +64,7 @@ if __name__ == "__main__":
         except Exception as e:
             monitor.logger.exception(f"{num}/{maxnum}| Exception occurred")
             monitor.logger.error(f"{num}/{maxnum}| Vinted notifier crashed: {e}")
-            notify(monitor.logger, f"{num}/{maxnum} | Vinted notifier crashed: {e}", API_TOKEN, USER_KEY)
+            notify(monitor.logger, f"🚨 {num}/{maxnum} | Vinted notifier crashed: {e}", API_TOKEN, USER_KEY)
 
             if monitor is not None and hasattr(monitor, "logger"):
                 close_logger(monitor.logger)
