@@ -25,7 +25,7 @@ def load_txt_lines(path: str):
     return lines
 
 def scrape_and_save_proxies():
-    html = httpx.get("https://free-proxy-list.net/").text
+    html = httpx.get("https://free-proxy-list.net/en/anonymous-proxy.html").text
     soup = BeautifulSoup(html, "html.parser")
 
     proxies = [
