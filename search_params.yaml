@@ -2,8 +2,6 @@ search_params:
   - catalog_ids[]:
       - 13
       - 79
-      - 221
-      - 1807
     order: newest_first
     brand_ids[]: 2069
     size_ids[]:
@@ -13,25 +11,47 @@ search_params:
     currency: EUR
     per_page: 20
 
-  - catalog_ids[]: 95
+  - catalog_ids[]: 34
     order: newest_first
-    brand_ids[]:
-      - 352755
-      - 94
-      - 379104 
-    price_to: 60
+    brand_ids[]: 2069
+    size_ids[]:
+      - 209
+      - 210
+    price_to: 50
     currency: EUR
     per_page: 20
-  
-  #- catalog_ids[]: 
-  #    - 13
-  #    - 79
-  #  order: newest_first
-  #  brand_ids[]: 2069
-  #  size_ids[]:
-  #    - 4
-  #    - 208
-  #  price_to: 30
-  #  currency: EUR
-  #  per_page: 20
 
+  - catalog_ids[]: 287
+    order: newest_first
+    brand_ids[]:
+      - 88
+      - 4273
+    price_to: 20
+    currency: EUR
+    per_page: 20
+
+#search_params:
+#  - catalog_ids[]:
+#      - 13
+#      - 79
+#      - 221
+#      - 1807
+#    order: newest_first
+#    brand_ids[]: 2069
+#    size_ids[]:
+#      - 6
+#      - 210
+#    price_to: 40
+#    currency: EUR
+#    per_page: 20
+#
+#  - catalog_ids[]: 95
+#    order: newest_first
+#    brand_ids[]:
+#      - 352755
+#      - 94
+#      - 379104 
+#    price_to: 60
+#    currency: EUR
+#    per_page: 20
+#
